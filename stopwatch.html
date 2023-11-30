@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+       
+        
+        div{
+            border : 2px solid black;
+            border : double;
+            width : 200px;
+            height : 200px;
+            margin-top : 150px;
+            margin-left : 530px;
+        }
+
+        span {
+            color : blue;
+            font-size: 90px;
+            margin-left : 460px;
+            if(span == watch){
+                W.color : black;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    
+    <span id="watch"><b>StopWatch</b></span>
+    
+    <h1 id="seen">0h 0m 0s 0ms</h1>
+   
+    <button id="btn1">Start</button>
+    <button id="btn2">Pause</button>
+    <button id="btn3">Stop</button>
+
+    <script>
+        let seen = document.getElementById("seen");
+        let button1 = document.getElementById("btn1");
+        let button2 = document.getElementById("btn2");
+        let button3 = document.getElementById("btn3");
+        let Watch = document.getElementById("watch")
+        let div = document.createElement("div")
+        
+        div.appendChild(seen)
+        div.appendChild(button1)
+        div.appendChild(button2)
+        div.appendChild(button3)
+        document.body.appendChild(div)
+        let secondcount = 0;
+        let mintcount = 0;
+        let hourcount = 0;
+        let millicount = 0;
+        let timer;
+        let count = 0;
+
+        Watch.addEventListener("mouseover", function() {
+            count++
+            if(count === 2){
+            Watch.style.color = "black";
+            }else{
+                Watch.style.color = "default-color"; 
+            }
+          });
+        button1.addEventListener("click", function () {
+            timer = setInterval(function () {
+                millicount++;
+                if (millicount === 100) {
+                    millicount = 0;
+                    secondcount++;
+                    if (secondcount === 60) {
+                        secondcount = 0;
+                        mintcount++;
+                        if (mintcount === 60) {
+                            mintcount = 0;
+                            hourcount++;
+                        }
+                    }
+                }
+
+                seen.innerText = `${hourcount}h ${mintcount}m ${secondcount}s ${millicount}ms`;
+                console.log(seen.innerText)
+                //milliseen.innerText = `${millicount}ms`;
+                //console.log(milliseen.innerText)
+            }, 1);
+
+        });
+
+        button2.addEventListener("click", function () {
+            clearInterval(timer);
+        });
+
+        button3.addEventListener("click", function () {
+            clearInterval(timer);
+            hourcount = 0;
+            mintcount = 0;
+            secondcount = 0;
+            millicount = 0;
+            seen.innerText = '0h 0m 0s 0ms';
+          //  milliseen.innerText = '0ms';
+        });
+
+      
+
+    </script>
+</body>
+</html>
+
+
