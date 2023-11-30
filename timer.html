@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer</title>
+</head>
+<body>
+    <h1 id="seen">0h 0m 0s </h1>
+    <input type="number" placeholder="minutes" id="min">
+    <input type="number" placeholder="seconds" id="sec">
+    <input type="number" placeholder="hours" id="hr">
+    <button onclick="start()">Start</button>
+    <button onclick="pause()">Pause</button>
+    <button onclick="reset()">Reset</button><br><br>
+    <audio id="timerAudio" controls >
+        <source src="mixkit-appliance-ready-beep-1076.wav" type="audio/ogg">
+        <source src="mixkit-appliance-ready-beep-1076.wav" type="audio/mpeg">
+    </audio>
+
+    <script>
+        let seen = document.getElementById("seen");
+        let minuteInput = document.getElementById("min");
+        let secondInput = document.getElementById("sec");
+        let hourInput = document.getElementById("hr");
+        let timerAudio = document.getElementById("timerAudio");
+
+        let secondCount = 0;
+        let minuteCount = 0;
+        let hourCount = 0;
+        let milliSecondCount = 0;
+        let timer;
+
+        function updateDisplay() {
+            seen.innerText = `${hourCount}h ${minuteCount}m ${secondCount}s `;
+        }
+
+        function start() {
+            if (timer) {
+                clearInterval(timer);
+            }
+
+            hourCount = Number(hourInput.value);
+            minuteCount = Number(minuteInput.value);
+            secondCount = Number(secondInput.value);
+
+            timer = setInterval(function () {
+                milliSecondCount--;
+
+                if (milliSecondCount < 0) {
+                    milliSecondCount = 99;
+                    secondCount--;
+
+                    if (secondCount < 0) {
+                        secondCount = 59;
+                        minuteCount--;
+
+                        if (minuteCount < 0) {
+                            minuteCount = 59;
+                            hourCount--;
+
+                            if (hourCount < 0) {
+                                clearInterval(timer);
+                                hourCount = 0;
+                                minuteCount = 0;
+                                secondCount = 0;
+                                milliSecondCount = 0;
+                                timerAudio.play(); 
+                            }
+                        }
+                    }
+                }
+
+                updateDisplay();
+            }, 10);
+        }
+
+        function pause() {
+            clearInterval(timer);
+        }
+
+        function reset() {
+            clearInterval(timer);
+            hourCount = 0;
+            minuteCount = 0;
+            secondCount = 0;
+            milliSecondCount = 0;
+            minuteInput.value = "";
+            secondInput.value = "";
+            hourInput.value = "";
+            updateDisplay();
+        }
+    </script>
+</body>
+</html>
+
